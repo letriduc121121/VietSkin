@@ -1,0 +1,43 @@
+# ===== Node / Frontend (Vite, NestJS) =====
+node_modules/
+dist/
+build/
+.cache/
+*.local
+
+# ===== Env / Secrets =====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ===== Java / Spring Boot (Maven) =====
+target/
+*.class
+*.jar
+*.war
+!**/.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# ===== Logs =====
+*.log
+*.err
+logs/
+
+# ===== IDE / Editor =====
+.idea/
+.vscode/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Prisma (NestJS, nếu dùng) =====
+*.db
+*.sqlite
