@@ -292,3 +292,30 @@ CREATE TABLE notifications (
     INDEX idx_notifications_is_read (is_read),
     CONSTRAINT fk_notif_user FOREIGN KEY (user_id) REFERENCES users (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ── 17. chat_conversations ───────────────────────────────────
+CREATE TABLE chat_conversations (
+    id         INT          NOT NULL AUTO_INCREMENT,
+    guest_id   VARCHAR(64),               -- định danh khách vãng lai (FE sinh) khi chưa đăng nhập
+    title      VARCHAR(150),              -- tóm tắt, thường lấy câu hỏi đầu tiên
+    created_at DATETIME     NOT NULL,
+    updated_at DATETIME,
+    user_id    INT,                       -- NULL nếu là khách vãng lai
+    PRIMARY KEY (id),
+    INDEX idx_chat_conv_user  (user_id),
+    INDEX idx_chat_conv_guest (guest_id),
+    CONSTRAINT fk_chat_conv_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ── 18. chat_messages ────────────────────────────────────────
+CREATE TABLE chat_messages (
+    id              INT          NOT NULL AUTO_INCREMENT,
+    role            VARCHAR(20)  NOT NULL,     -- "user" / "assistant"
+    content         TEXT         NOT NULL,
+    created_at      DATETIME     NOT NULL,
+    conversation_id INT          NOT NULL,
+    PRIMARY KEY (id),
+    INDEX idx_chat_msg_conversation (conversation_id),
+    CONSTRAINT fk_chat_msg_conversation FOREIGN KEY (conversation_id)
+        REFERENCES chat_conversations (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
